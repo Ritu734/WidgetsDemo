@@ -35,8 +35,29 @@ struct AdvancedEntry: TimelineEntry {
 
 struct AdvancedView: View {
     var entry: AdvancedProvider.Entry
+    @Environment(\.widgetFamily) var family
     var body: some View {
-        Text(entry.advancedString)
+        switch family {
+            case .systemSmall:
+                
+                Text(entry.advancedString).padding()
+                    .widgetURL(URL(string: "WidgetsDemo://relativeText"))
+                
+            case .systemMedium:
+                
+                VStack(alignment: .leading) {
+                    Link(destination: URL(string: "WidgetsDemo://relativeText")!) {
+                        Text(entry.advancedString)
+                        Text("This is medium widget, just in case you wanted to know! ;)")
+                    }
+                }.padding()
+                
+            default:
+                VStack(alignment: .leading) {
+                    Text(entry.advancedString)
+                    Text("This is large widget!")
+                }.padding()
+        }
     }
 }
 
